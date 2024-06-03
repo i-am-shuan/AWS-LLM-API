@@ -83,7 +83,7 @@ class InvokeBedrock:
                         print(message, end="")
                         self.send_message_to_client(str(message))  # 문자열로 변환하여 전송
                     elif chunk.get("type") == "content_block_stop":
-                        self.send_message_to_client(json.dumps({"type": "done", "message": "All chunks received"}))
+                        self.send_message_to_client(json.dumps({"type": "done"}))
                 else:
                     print("No 'chunk' in event")
 
