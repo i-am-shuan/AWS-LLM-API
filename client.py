@@ -65,9 +65,11 @@ async def connect():
         except Exception as e:
             print(f"Error: {e}")
 
+
         # 최종 합친 응답 메시지 출력
-        print("\n\n####################################")
-        print("response:", combined_response)
+        print("\n\n############################################")
+        print("############################################")
+        print(combined_response)
         
         # disconnect 메시지 전송
         disconnect_message = {
