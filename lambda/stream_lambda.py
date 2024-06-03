@@ -81,16 +81,11 @@ class InvokeBedrock:
                     if chunk.get("type") == "content_block_delta":
                         message = chunk["delta"].get("text", "")
                         print(message, end="")
-                        self.send_message_to_client(message)
+                        self.send_message_to_client(str(message))  # 문자열로 변환하여 전송
+                    elif chunk.get("type") == "content_block_stop":
+                        self.send_message_to_client(json.dumps({"type": "done", "message": "All chunks received"}))
                 else:
                     print("No 'chunk' in event")
-
-            # 응답이 완료되었음을 알리는 메시지 전송
-            complete_message = json.dumps({
-                "type": "done",
-                "message": "All chunks received"
-            })
-            self.send_message_to_client(complete_message)
 
         except (BotoCoreError, ClientError) as error:
             print(error)
@@ -98,7 +93,7 @@ class InvokeBedrock:
             self.conn.post_to_connection(**self.params)
 
     def send_message_to_client(self, message):
-        self.params["Data"] = message
+        self.params["Data"] = json.dumps({"message": str(message)})  # 문자열로 변환하여 전송
         try:
             self.conn.post_to_connection(**self.params)
         except ClientError as e:
