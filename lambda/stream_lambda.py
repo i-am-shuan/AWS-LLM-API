@@ -75,7 +75,7 @@ class InvokeBedrock:
                 print(f"Event received: {event}")
 
                 if 'chunk' in event:
-                    chunk_data = event['chunk']['bytes'].decode('utf-8')
+                    chunk_data = event['chunk']['bytes']
                     chunk = json.loads(chunk_data)
                     print(chunk)
                     if chunk.get("type") == "content_block_delta":
