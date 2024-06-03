@@ -85,6 +85,13 @@ class InvokeBedrock:
                 else:
                     print("No 'chunk' in event")
 
+            # 응답이 완료되었음을 알리는 메시지 전송
+            complete_message = json.dumps({
+                "type": "done",
+                "message": "All chunks received"
+            })
+            self.send_message_to_client(complete_message)
+
         except (BotoCoreError, ClientError) as error:
             print(error)
             self.params["Data"] = json.dumps({'error': str(error)})
