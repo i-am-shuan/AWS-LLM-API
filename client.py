@@ -4,7 +4,7 @@ import json
 
 async def connect():
     # WebSocket API의 URL
-    websocket_url = 'wss://l776hl36a4.execute-api.us-east-1.amazonaws.com/prod'
+    websocket_url = 'wss://l776hl36a4.execute-api.us-east-1.amazonaws.com/dev'
 
     async with websockets.connect(websocket_url) as websocket:
         print("WebSocket connection opened")
@@ -26,13 +26,13 @@ async def connect():
         message = {
             'action': 'sendMessage',
             'body': json.dumps({
-                'prompt': 'Hello, Bedrock!',
+                'prompt': '다이어트에 도움이 되는 음식을 추천해줘.',
                 'connectionId': connection_id
             })
         }
         await websocket.send(json.dumps(message))
 
-        buffer = ""  # 메시지를 저장할 버퍼
+        combined_response = ""  # 전체 응답 메시지를 저장할 변수
 
         try:
             async for message in websocket:
@@ -44,21 +44,25 @@ async def connect():
                     print('Received message:', data)
 
                     # 서버로부터 메시지를 수신했을 때 처리
-                    if data.get('type') == 'response':
-                        print('Response:', data.get('message'))
-                    elif data.get('type') == 'done':
+                    if 'message' in data:
+                        combined_response += data['message']
+                        print('Response:', data['message'])
+                    if data.get('type') == 'done':
                         print('Received done signal, closing connection.')
                         break
 
                 except json.JSONDecodeError:
-                    # JSON 디코드 오류가 발생하면 텍스트 메시지로 간주하고 처리
-                    print(f"Non-JSON message received: {message}")
-                    continue
+                    combined_response += message
+                    print(f"Non-JSON message added: {message}")
 
         except websockets.ConnectionClosed:
             print("WebSocket connection closed")
         except Exception as e:
             print(f"Error: {e}")
+
+
+        # 최종 합친 응답 메시지 출력
+        print("###Response:", combined_response)
 
         # disconnect 메시지 전송
         disconnect_message = {
