@@ -67,9 +67,8 @@ async def connect():
 
 
         # 최종 합친 응답 메시지 출력
-        print("\n\n############################################")
-        print("############################################")
-        print(combined_response)
+        # print("\n\n############################################")
+        # print('combined_response: ', combined_response)
         
         # disconnect 메시지 전송
         disconnect_message = {
