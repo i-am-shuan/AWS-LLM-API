@@ -1,2 +1,2 @@
 # AWS-LLM-API
-websocket api gateway
+https://github.com/rp-86/streaming_openai_aws/blob/main/README.md
